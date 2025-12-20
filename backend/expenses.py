@@ -15,7 +15,8 @@ def add_expense():
         amount=float(data["amount"]),
         category=data["category"],
         date=datetime.strptime(data["date"], "%Y-%m-%d"),
-        user_id=current_user.id
+        # user_id=current_user.id
+        user_id=1
     )
 
     db.session.add(expense)
