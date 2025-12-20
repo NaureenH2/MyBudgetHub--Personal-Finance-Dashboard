@@ -5,6 +5,7 @@ import os
 
 from models import db, User
 from auth import auth_bp
+from expenses import expenses_bp
 
 load_dotenv()
 
@@ -23,6 +24,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
+app.register_blueprint(expenses_bp)
 
 @app.route("/")
 def home():
