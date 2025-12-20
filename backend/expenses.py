@@ -42,3 +42,36 @@ def get_expenses():
         })
 
     return jsonify(result)
+
+@expenses_bp.route("/expenses/<int:expense_id>", methods=["PUT"])
+def update_expense(expense_id):
+    data = request.get_json()
+
+    expense = Expense.query.filter_by(id=expense_id, user_id=1).first()
+
+    if not expense:
+        return jsonify({"error": "Expense not found"}), 404
+
+    expense.description = data.get("description", expense.description)
+    expense.amount = float(data.get("amount", expense.amount))
+    expense.category = data.get("category", expense.category)
+    expense.date = datetime.strptime(
+        data.get("date", expense.date.strftime("%Y-%m-%d")),
+        "%Y-%m-%d"
+    )
+
+    db.session.commit()
+
+    return jsonify({"message": "Expense updated"})
+
+@expenses_bp.route("/expenses/<int:expense_id>", methods=["DELETE"])
+def delete_expense(expense_id):
+    expense = Expense.query.filter_by(id=expense_id, user_id=1).first()
+
+    if not expense:
+        return jsonify({"error": "Expense not found"}), 404
+
+    db.session.delete(expense)
+    db.session.commit()
+
+    return jsonify({"message": "Expense deleted"})
