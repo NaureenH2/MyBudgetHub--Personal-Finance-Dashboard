@@ -4,6 +4,7 @@ from flask_login import LoginManager
 import os
 
 from models import db, User
+from auth import auth_bp
 
 load_dotenv()
 
@@ -20,6 +21,8 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+app.register_blueprint(auth_bp, url_prefix="/auth")
 
 @app.route("/")
 def home():
