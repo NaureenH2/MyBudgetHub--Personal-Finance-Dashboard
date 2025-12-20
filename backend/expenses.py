@@ -28,7 +28,8 @@ def add_expense():
 @expenses_bp.route("/expenses", methods=["GET"])
 # @login_required
 def get_expenses():
-    expenses = Expense.query.filter_by(user_id=current_user.id).all()
+    # expenses = Expense.query.filter_by(user_id=current_user.id).all()
+    expenses = Expense.query.filter_by(user_id=1).all()
 
     result = []
     for e in expenses:
