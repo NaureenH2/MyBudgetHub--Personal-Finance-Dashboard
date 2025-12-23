@@ -2,6 +2,8 @@ async function loadBudgets() {
   const response = await fetch("http://127.0.0.1:5000/budgets");
   const data = await response.json();
   console.log("Budgets:", data);
+  renderBudgetBarChart(budgets);
+
 }
 
 async function loadExpenses() {
@@ -68,3 +70,35 @@ function renderMonthlyLineChart(expenses) {
   });
 }
 
+function renderBudgetBarChart(budgets) {
+  const labels = budgets.map(b => b.category);
+  const spent = budgets.map(b => b.spent);
+  const limits = budgets.map(b => b.limit);
+
+  const ctx = document.getElementById("budgetChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Spent",
+          data: spent
+        },
+        {
+          label: "Budget Limit",
+          data: limits
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
