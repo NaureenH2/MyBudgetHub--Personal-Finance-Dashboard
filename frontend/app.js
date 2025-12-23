@@ -9,6 +9,7 @@ async function loadExpenses() {
   const data = await response.json();
   console.log("Expenses:", data);
   renderExpenseChart(data);
+  renderMonthlyLineChart(expenses);
 }
 
 loadBudgets();
@@ -35,6 +36,33 @@ function renderExpenseChart(expenses) {
       labels: Object.keys(totals),
       datasets: [{
         data: Object.values(totals)
+      }]
+    }
+  });
+}
+
+function renderMonthlyLineChart(expenses) {
+  const monthlyTotals = {};
+
+  expenses.forEach(e => {
+    const month = e.date.slice(0, 7); // YYYY-MM
+    monthlyTotals[month] = (monthlyTotals[month] || 0) + e.amount;
+  });
+
+  const labels = Object.keys(monthlyTotals).sort();
+  const data = labels.map(m => monthlyTotals[m]);
+
+  const ctx = document.getElementById("monthlyChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Monthly Spending",
+        data: data,
+        fill: false,
+        tension: 0.2
       }]
     }
   });
