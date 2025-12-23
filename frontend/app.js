@@ -14,6 +14,8 @@ async function loadExpenses() {
 loadBudgets();
 loadExpenses();
 
+let expenseChart = null;
+
 function renderExpenseChart(expenses) {
   const totals = {};
 
@@ -23,7 +25,11 @@ function renderExpenseChart(expenses) {
 
   const ctx = document.getElementById("expenseChart").getContext("2d");
 
-  new Chart(ctx, {
+  if (expenseChart) {
+    expenseChart.destroy();
+  }
+
+  expenseChart = new Chart(ctx, {
     type: "pie",
     data: {
       labels: Object.keys(totals),
@@ -33,3 +39,4 @@ function renderExpenseChart(expenses) {
     }
   });
 }
+
