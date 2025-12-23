@@ -44,7 +44,13 @@ def get_budgets():
             "spent": float(spent),
             "remaining": round(b.limit - spent, 2),
             "percent_used": round(percent_used, 2),
-            "warning": percent_used >= 80
+            "warning": percent_used >= 80,
+            "alert_level": (
+                "danger" if percent_used >= 100 else
+                "warning" if percent_used >= 80 else
+                "safe"
+            )
         })
+
 
     return jsonify(result)
