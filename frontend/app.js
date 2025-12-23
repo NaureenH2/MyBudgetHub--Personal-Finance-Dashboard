@@ -1,18 +1,20 @@
 async function loadBudgets() {
   const response = await fetch("http://127.0.0.1:5000/budgets");
-  const data = await response.json();
-  console.log("Budgets:", data);
-  renderBudgetBarChart(budgets);
+  const budgets = await response.json();
 
+  console.log("Budgets:", budgets);
+  renderBudgetBarChart(budgets);
 }
 
 async function loadExpenses() {
   const response = await fetch("http://127.0.0.1:5000/expenses");
-  const data = await response.json();
-  console.log("Expenses:", data);
-  renderExpenseChart(data);
+  const expenses = await response.json();
+
+  console.log("Expenses:", expenses);
+  renderExpenseChart(expenses);
   renderMonthlyLineChart(expenses);
 }
+
 
 loadBudgets();
 loadExpenses();
