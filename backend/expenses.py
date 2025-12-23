@@ -157,6 +157,9 @@ def import_expenses():
 
     if not file.filename.endswith(".csv"):
         return {"error": "Invalid file type"}, 400
+    
+    Expense.query.filter_by(user_id=1).delete()
+    db.session.commit()
 
     stream = file.stream.read().decode("utf-8").splitlines()
     reader = csv.DictReader(stream)
