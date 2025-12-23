@@ -104,6 +104,51 @@ def export_expenses():
         }
     )
 
+def auto_category(description):
+    d = description.lower()
+
+    FOOD_KEYWORDS = [
+        "coffee", "cafe", "restaurant", "diner", "grill",
+        "pizza", "burger", "food", "bakery", "tim hortons",
+        "mcdonald", "kfc", "subway"
+    ]
+
+    GROCERY_KEYWORDS = [
+        "grocery", "market", "supermarket", "foods",
+        "walmart", "target", "costco", "loblaws", "metro"
+    ]
+
+    TRANSPORT_KEYWORDS = [
+        "uber", "lyft", "taxi", "bus", "train", "transit",
+        "gas", "fuel", "shell", "esso", "petro"
+    ]
+
+    SHOPPING_KEYWORDS = [
+        "amazon", "store", "shop", "mall", "online"
+    ]
+
+    RENT_KEYWORDS = [
+        "rent", "lease", "apartment", "housing"
+    ]
+
+    if any(k in d for k in FOOD_KEYWORDS):
+        return "Food"
+
+    if any(k in d for k in GROCERY_KEYWORDS):
+        return "Groceries"
+
+    if any(k in d for k in TRANSPORT_KEYWORDS):
+        return "Transport"
+
+    if any(k in d for k in RENT_KEYWORDS):
+        return "Rent"
+
+    if any(k in d for k in SHOPPING_KEYWORDS):
+        return "Shopping"
+
+    return "Other"
+
+
 @expenses_bp.route("/expenses/import", methods=["POST"])
 def import_expenses():
     if "file" not in request.files:
