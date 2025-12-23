@@ -104,3 +104,40 @@ def export_expenses():
         }
     )
 
+@expenses_bp.route("/expenses/import", methods=["POST"])
+def import_expenses():
+    if "file" not in request.files:
+        return {"error": "No file uploaded"}, 400
+
+    file = request.files["file"]
+
+    if not file.filename.endswith(".csv"):
+        return {"error": "Invalid file type"}, 400
+
+    stream = file.stream.read().decode("utf-8").splitlines()
+    reader = csv.DictReader(stream)
+
+    imported = 0
+
+    for row in reader:
+        amount = float(row["Amount"])
+
+        if amount >= 0:
+            continue  # skip income for now
+
+        expense = Expense(
+            description=row["Description"],
+            amount=abs(amount),
+            category="Uncategorized",
+            date=datetime.strptime(row["Date"], "%Y-%m-%d"),
+            user_id=1  # temporary
+        )
+
+        db.session.add(expense)
+        imported += 1
+
+    db.session.commit()
+
+    return {
+        "message": f"{imported} expenses imported"
+    }
