@@ -2,6 +2,9 @@ from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from datetime import datetime
 from models import db, Expense
+import csv
+from io import StringIO
+from flask import Response
 
 expenses_bp = Blueprint("expenses", __name__)
 
@@ -75,3 +78,29 @@ def delete_expense(expense_id):
     db.session.commit()
 
     return jsonify({"message": "Expense deleted"})
+
+@expenses_bp.route("/expenses/export", methods=["GET"])
+def export_expenses():
+    expenses = Expense.query.all()
+
+    output = StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow(["description", "amount", "category", "date"])
+
+    for e in expenses:
+        writer.writerow([
+            e.description,
+            e.amount,
+            e.category,
+            e.date.isoformat()
+        ])
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={
+            "Content-Disposition": "attachment; filename=expenses.csv"
+        }
+    )
+
