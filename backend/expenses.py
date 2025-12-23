@@ -148,7 +148,6 @@ def auto_category(description):
 
     return "Other"
 
-
 @expenses_bp.route("/expenses/import", methods=["POST"])
 def import_expenses():
     if "file" not in request.files:
