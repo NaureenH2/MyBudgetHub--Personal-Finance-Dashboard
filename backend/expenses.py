@@ -172,7 +172,7 @@ def import_expenses():
         expense = Expense(
             description=row["Description"],
             amount=abs(amount),
-            category="Uncategorized",
+            category=auto_category(row["Description"]),
             date=datetime.strptime(row["Date"], "%Y-%m-%d"),
             user_id=1  # temporary
         )
