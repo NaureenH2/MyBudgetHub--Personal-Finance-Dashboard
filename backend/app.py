@@ -8,6 +8,7 @@ from models import db, User
 from auth import auth_bp
 from expenses import expenses_bp
 from budgets import budgets_bp
+from dashboard import dashboard_bp
 
 load_dotenv()
 
@@ -29,6 +30,7 @@ def load_user(user_id):
 app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(expenses_bp)
 app.register_blueprint(budgets_bp)
+app.register_blueprint(dashboard_bp)
 
 @app.route("/")
 def home():
