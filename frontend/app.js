@@ -191,6 +191,7 @@ function renderWeeklyComparison(expenses) {
   const now = new Date();
 
   const startOfThisWeek = new Date(now);
+  startOfThisWeek.setHours(0, 0, 0, 0);
   startOfThisWeek.setDate(now.getDate() - now.getDay());
 
   const startOfLastWeek = new Date(startOfThisWeek);
@@ -207,15 +208,16 @@ function renderWeeklyComparison(expenses) {
   const thisWeek = sumInRange(startOfThisWeek, now);
   const lastWeek = sumInRange(startOfLastWeek, startOfThisWeek);
 
+  const el = document.getElementById("weeklyComparison");
+
   if (lastWeek === 0) {
-    document.getElementById("monthComparison").innerText =
-      "📅 No data for last week";
+    el.innerText = "📅 No data for last week";
     return;
   }
 
   const percent = ((thisWeek - lastWeek) / lastWeek) * 100;
   const arrow = percent >= 0 ? "↑" : "↓";
+  const sign = percent >= 0 ? "+" : "";
 
-  document.getElementById("monthComparison").innerText =
-    `📅 Weekly spending ${arrow} ${Math.abs(percent).toFixed(1)}%`;
+  el.innerText = `📅 ${arrow} ${sign}${percent.toFixed(1)}% vs last week`;
 }
