@@ -4,6 +4,7 @@ async function loadBudgets() {
 
   console.log("Budgets:", budgets);
   renderBudgetBarChart(budgets);
+  renderBudgetWarnings(budgets);
 }
 
 async function loadExpenses() {
@@ -13,8 +14,10 @@ async function loadExpenses() {
   console.log("Expenses:", expenses);
   renderExpenseChart(expenses);
   renderMonthlyLineChart(expenses);
+  renderMonthlyTotal(expenses);
+  renderTopCategory(expenses);
+  renderMonthComparison(expenses);
 }
-
 
 loadBudgets();
 loadExpenses();
@@ -104,3 +107,82 @@ function renderBudgetBarChart(budgets) {
     }
   });
 }
+
+function renderMonthlyTotal(expenses) {
+  const now = new Date();
+  const currentMonth = now.toISOString().slice(0, 7); // YYYY-MM
+
+  const total = expenses
+    .filter(e => e.date.startsWith(currentMonth))
+    .reduce((sum, e) => sum + e.amount, 0);
+
+  document.getElementById("monthlyTotal").innerText =
+    `💰 Total spent this month: $${total.toFixed(2)}`;
+}
+
+function renderTopCategory(expenses) {
+  const totals = {};
+
+  expenses.forEach(e => {
+    totals[e.category] = (totals[e.category] || 0) + e.amount;
+  });
+
+  let topCat = null;
+  let max = 0;
+
+  for (const cat in totals) {
+    if (totals[cat] > max) {
+      max = totals[cat];
+      topCat = cat;
+    }
+  }
+
+  document.getElementById("topCategory").innerText =
+    `🏆 Top category: ${topCat} ($${max.toFixed(2)})`;
+}
+
+function renderMonthComparison(expenses) {
+  const now = new Date();
+  const currentMonth = now.toISOString().slice(0, 7);
+
+  const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonth = lastMonthDate.toISOString().slice(0, 7);
+
+  const sumForMonth = month =>
+    expenses
+      .filter(e => e.date.startsWith(month))
+      .reduce((sum, e) => sum + e.amount, 0);
+
+  const currentTotal = sumForMonth(currentMonth);
+  const lastTotal = sumForMonth(lastMonth);
+
+  if (lastTotal === 0) {
+    document.getElementById("monthComparison").innerText =
+      "📊 No data for last month";
+    return;
+  }
+
+  const percent = ((currentTotal - lastTotal) / lastTotal) * 100;
+  const arrow = percent >= 0 ? "↑" : "↓";
+
+  document.getElementById("monthComparison").innerText =
+    `📈 You spent ${arrow} ${Math.abs(percent).toFixed(1)}% vs last month`;
+}
+
+function renderBudgetWarnings(budgets) {
+  const warnings = budgets.filter(b => b.warning);
+
+  if (warnings.length === 0) {
+    document.getElementById("budgetWarnings").innerText =
+      "✅ All budgets are under control";
+    return;
+  }
+
+  document.getElementById("budgetWarnings").innerHTML =
+    warnings
+      .map(b =>
+        `⚠️ ${b.category}: ${b.percent_used.toFixed(0)}% of budget used`
+      )
+      .join("<br>");
+}
+
