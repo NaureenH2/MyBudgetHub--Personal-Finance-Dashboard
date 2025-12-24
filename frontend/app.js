@@ -188,6 +188,7 @@ function renderBudgetWarnings(budgets) {
 }
 
 function renderWeeklyComparison(expenses) {
+  console.log("renderWeeklyComparison ran", expenses.length);
   const now = new Date();
 
   const startOfThisWeek = new Date(now);
