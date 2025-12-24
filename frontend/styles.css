@@ -1,0 +1,37 @@
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.summary-card p {
+  margin-top: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.summary-card.warning {
+  border-left: 5px solid #f39c12;
+}
+
+.summary-card.positive {
+  border-left: 5px solid #2ecc71;
+}
+
+.summary-card.negative {
+  border-left: 5px solid #e74c3c;
+}
