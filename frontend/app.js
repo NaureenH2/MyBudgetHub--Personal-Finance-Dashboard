@@ -17,6 +17,7 @@ async function loadExpenses() {
   renderMonthlyTotal(expenses);
   renderTopCategory(expenses);
   renderMonthComparison(expenses);
+  renderWeeklyComparison(expenses);
 }
 
 loadBudgets();
@@ -186,3 +187,35 @@ function renderBudgetWarnings(budgets) {
       .join("<br>");
 }
 
+function renderWeeklyComparison(expenses) {
+  const now = new Date();
+
+  const startOfThisWeek = new Date(now);
+  startOfThisWeek.setDate(now.getDate() - now.getDay());
+
+  const startOfLastWeek = new Date(startOfThisWeek);
+  startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
+
+  const sumInRange = (start, end) =>
+    expenses
+      .filter(e => {
+        const d = new Date(e.date);
+        return d >= start && d < end;
+      })
+      .reduce((sum, e) => sum + e.amount, 0);
+
+  const thisWeek = sumInRange(startOfThisWeek, now);
+  const lastWeek = sumInRange(startOfLastWeek, startOfThisWeek);
+
+  if (lastWeek === 0) {
+    document.getElementById("monthComparison").innerText =
+      "📅 No data for last week";
+    return;
+  }
+
+  const percent = ((thisWeek - lastWeek) / lastWeek) * 100;
+  const arrow = percent >= 0 ? "↑" : "↓";
+
+  document.getElementById("monthComparison").innerText =
+    `📅 Weekly spending ${arrow} ${Math.abs(percent).toFixed(1)}%`;
+}
