@@ -24,6 +24,8 @@ loadBudgets();
 loadExpenses();
 
 let expenseChart = null;
+let monthlyChart = null;
+let budgetChart = null;
 
 function renderExpenseChart(expenses) {
   const totals = {};
@@ -53,7 +55,7 @@ function renderMonthlyLineChart(expenses) {
   const monthlyTotals = {};
 
   expenses.forEach(e => {
-    const month = e.date.slice(0, 7); // YYYY-MM
+    const month = e.date.slice(0, 7);
     monthlyTotals[month] = (monthlyTotals[month] || 0) + e.amount;
   });
 
@@ -62,15 +64,16 @@ function renderMonthlyLineChart(expenses) {
 
   const ctx = document.getElementById("monthlyChart").getContext("2d");
 
-  new Chart(ctx, {
+  if (monthlyChart) monthlyChart.destroy();
+
+  monthlyChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: labels,
+      labels,
       datasets: [{
         label: "Monthly Spending",
-        data: data,
-        fill: false,
-        tension: 0.2
+        data,
+        tension: 0.3
       }]
     }
   });
@@ -83,42 +86,39 @@ function renderBudgetBarChart(budgets) {
 
   const ctx = document.getElementById("budgetChart").getContext("2d");
 
-  new Chart(ctx, {
+  if (budgetChart) budgetChart.destroy();
+
+  budgetChart = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: labels,
+      labels,
       datasets: [
-        {
-          label: "Spent",
-          data: spent
-        },
-        {
-          label: "Budget Limit",
-          data: limits
-        }
+        { label: "Spent", data: spent },
+        { label: "Budget Limit", data: limits }
       ]
     },
     options: {
       responsive: true,
       scales: {
-        y: {
-          beginAtZero: true
-        }
+        y: { beginAtZero: true }
       }
     }
   });
 }
 
 function renderMonthlyTotal(expenses) {
+  const el = document.getElementById("monthlyTotal");
+  if (!el) return;
+
   const now = new Date();
-  const currentMonth = now.toISOString().slice(0, 7); // YYYY-MM
+  const currentMonth = now.toISOString().slice(0, 7);
 
   const total = expenses
     .filter(e => e.date.startsWith(currentMonth))
     .reduce((sum, e) => sum + e.amount, 0);
 
-  document.getElementById("monthlyTotal").innerText =
-    `💰 Total spent this month: $${total.toFixed(2)}`;
+  const text = `$${total.toFixed(2)}`;
+  if (el.innerText !== text) el.innerText = text;
 }
 
 function renderTopCategory(expenses) {
