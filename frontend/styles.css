@@ -35,3 +35,18 @@
 .summary-card.negative {
   border-left: 5px solid #e74c3c;
 }
+
+.good {
+  color: #1e7e34;        /* green */
+  font-weight: bold;
+}
+
+.bad {
+  color: #c82333;        /* red */
+  font-weight: bold;
+}
+
+.neutral {
+  color: #6c757d;        /* gray */
+  font-weight: bold;
+}
