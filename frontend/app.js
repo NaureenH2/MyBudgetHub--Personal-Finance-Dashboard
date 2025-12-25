@@ -143,6 +143,9 @@ function renderTopCategory(expenses) {
 }
 
 function renderMonthComparison(expenses) {
+  const el = document.getElementById("monthComparison");
+  if (!el) return;
+
   const now = new Date();
   const currentMonth = now.toISOString().slice(0, 7);
 
@@ -157,17 +160,21 @@ function renderMonthComparison(expenses) {
   const currentTotal = sumForMonth(currentMonth);
   const lastTotal = sumForMonth(lastMonth);
 
+  el.className = "";
+
   if (lastTotal === 0) {
-    document.getElementById("monthComparison").innerText =
-      "📊 No data for last month";
+    el.classList.add("neutral");
+    el.innerText = "📊 No data for last month";
     return;
   }
 
   const percent = ((currentTotal - lastTotal) / lastTotal) * 100;
   const arrow = percent >= 0 ? "↑" : "↓";
 
-  document.getElementById("monthComparison").innerText =
-    `📈 You spent ${arrow} ${Math.abs(percent).toFixed(1)}% vs last month`;
+  el.classList.add(percent <= 0 ? "good" : "bad");
+
+  el.innerText =
+    `📊 ${arrow} ${Math.abs(percent).toFixed(1)}% vs last month`;
 }
 
 function renderBudgetWarnings(budgets) {
@@ -188,11 +195,12 @@ function renderBudgetWarnings(budgets) {
 }
 
 function renderWeeklyComparison(expenses) {
-  console.log("renderWeeklyComparison ran", expenses.length);
+  const el = document.getElementById("weeklyComparison");
+  if (!el) return;
+
   const now = new Date();
 
   const startOfThisWeek = new Date(now);
-  startOfThisWeek.setHours(0, 0, 0, 0);
   startOfThisWeek.setDate(now.getDate() - now.getDay());
 
   const startOfLastWeek = new Date(startOfThisWeek);
@@ -209,16 +217,19 @@ function renderWeeklyComparison(expenses) {
   const thisWeek = sumInRange(startOfThisWeek, now);
   const lastWeek = sumInRange(startOfLastWeek, startOfThisWeek);
 
-  const el = document.getElementById("weeklyComparison");
+  el.className = "";
 
   if (lastWeek === 0) {
+    el.classList.add("neutral");
     el.innerText = "📅 No data for last week";
     return;
   }
 
   const percent = ((thisWeek - lastWeek) / lastWeek) * 100;
   const arrow = percent >= 0 ? "↑" : "↓";
-  const sign = percent >= 0 ? "+" : "";
 
-  el.innerText = `📅 ${arrow} ${sign}${percent.toFixed(1)}% vs last week`;
+  el.classList.add(percent <= 0 ? "good" : "bad");
+
+  el.innerText =
+    `📅 ${arrow} ${Math.abs(percent).toFixed(1)}% vs last week`;
 }
