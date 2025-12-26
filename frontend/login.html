@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login — MyBudgetHub</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .auth-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 2rem;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-container h1 {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: #111;
+    }
+
+    .auth-container p {
+      text-align: center;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .success-message {
+      color: #2ecc71;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+      background: #4338ca;
+    }
+
+    .btn-submit:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .auth-links {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #666;
+    }
+
+    .auth-links a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <h1>MyBudgetHub</h1>
+    <p>Welcome back</p>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required 
+          autocomplete="email"
+          placeholder="your@email.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          required 
+          autocomplete="current-password"
+          placeholder="Enter your password"
+        />
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        Log In
+      </button>
+    </form>
+
+    <div class="auth-links">
+      Don't have an account? <a href="register.html">Create one</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Reset messages
+      errorMessage.classList.remove('show');
+      successMessage.classList.remove('show');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Logging in...';
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          successMessage.textContent = data.message || 'Login successful! Redirecting...';
+          successMessage.classList.add('show');
+          
+          // Redirect to dashboard after 1 second
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1000);
+        } else {
+          errorMessage.textContent = data.error || 'Invalid email or password. Please try again.';
+          errorMessage.classList.add('show');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Log In';
+        }
+      } catch (error) {
+        errorMessage.textContent = 'Network error. Please check if the server is running.';
+        errorMessage.classList.add('show');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In';
+      }
+    });
+  </script>
+
+</body>
+</html>
+
