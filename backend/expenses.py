@@ -9,7 +9,7 @@ from flask import Response
 expenses_bp = Blueprint("expenses", __name__)
 
 @expenses_bp.route("/expenses", methods=["POST"])
-# @login_required
+@login_required
 def add_expense():
     data = request.get_json()
 
@@ -18,8 +18,7 @@ def add_expense():
         amount=float(data["amount"]),
         category=data["category"],
         date=datetime.strptime(data["date"], "%Y-%m-%d"),
-        # user_id=current_user.id
-        user_id=1
+        user_id=current_user.id
     )
 
     db.session.add(expense)
@@ -29,10 +28,9 @@ def add_expense():
 
 
 @expenses_bp.route("/expenses", methods=["GET"])
-# @login_required
+@login_required
 def get_expenses():
-    # expenses = Expense.query.filter_by(user_id=current_user.id).all()
-    expenses = Expense.query.filter_by(user_id=1).all()
+    expenses = Expense.query.filter_by(user_id=current_user.id).all()
 
     result = []
     for e in expenses:
