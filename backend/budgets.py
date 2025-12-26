@@ -1,17 +1,19 @@
 from flask import Blueprint, request, jsonify
+from flask_login import login_required, current_user
 from sqlalchemy import func
 from models import db, Budget, Expense
 
 budgets_bp = Blueprint("budgets", __name__)
 
 @budgets_bp.route("/budgets", methods=["POST"])
+@login_required
 def create_budget():
     data = request.get_json()
 
     budget = Budget(
         category=data["category"],
         limit=float(data["limit"]),
-        user_id=1
+        user_id=current_user.id
     )
 
     db.session.add(budget)
@@ -21,15 +23,16 @@ def create_budget():
 
 
 @budgets_bp.route("/budgets", methods=["GET"])
+@login_required
 def get_budgets():
-    budgets = Budget.query.filter_by(user_id=1).all()
+    budgets = Budget.query.filter_by(user_id=current_user.id).all()
     result = []
 
     for b in budgets:
         spent = (
             db.session.query(func.coalesce(func.sum(Expense.amount), 0))
             .filter(
-                Expense.user_id == 1,
+                Expense.user_id == current_user.id,
                 Expense.category == b.category
             )
             .scalar()

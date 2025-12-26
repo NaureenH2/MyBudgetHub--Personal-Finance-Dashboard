@@ -45,10 +45,11 @@ def get_expenses():
     return jsonify(result)
 
 @expenses_bp.route("/expenses/<int:expense_id>", methods=["PUT"])
+@login_required
 def update_expense(expense_id):
     data = request.get_json()
 
-    expense = Expense.query.filter_by(id=expense_id, user_id=1).first()
+    expense = Expense.query.filter_by(id=expense_id, user_id=current_user.id).first()
 
     if not expense:
         return jsonify({"error": "Expense not found"}), 404
@@ -66,8 +67,9 @@ def update_expense(expense_id):
     return jsonify({"message": "Expense updated"})
 
 @expenses_bp.route("/expenses/<int:expense_id>", methods=["DELETE"])
+@login_required
 def delete_expense(expense_id):
-    expense = Expense.query.filter_by(id=expense_id, user_id=1).first()
+    expense = Expense.query.filter_by(id=expense_id, user_id=current_user.id).first()
 
     if not expense:
         return jsonify({"error": "Expense not found"}), 404
@@ -78,8 +80,9 @@ def delete_expense(expense_id):
     return jsonify({"message": "Expense deleted"})
 
 @expenses_bp.route("/expenses/export", methods=["GET"])
+@login_required
 def export_expenses():
-    expenses = Expense.query.all()
+    expenses = Expense.query.filter_by(user_id=current_user.id).all()
 
     output = StringIO()
     writer = csv.writer(output)
@@ -147,6 +150,7 @@ def auto_category(description):
     return "Other"
 
 @expenses_bp.route("/expenses/import", methods=["POST"])
+@login_required
 def import_expenses():
     if "file" not in request.files:
         return {"error": "No file uploaded"}, 400
@@ -156,7 +160,7 @@ def import_expenses():
     if not file.filename.endswith(".csv"):
         return {"error": "Invalid file type"}, 400
     
-    Expense.query.filter_by(user_id=1).delete()
+    Expense.query.filter_by(user_id=current_user.id).delete()
     db.session.commit()
 
     stream = file.stream.read().decode("utf-8").splitlines()
@@ -175,7 +179,7 @@ def import_expenses():
             amount=abs(amount),
             category=auto_category(row["Description"]),
             date=datetime.strptime(row["Date"], "%Y-%m-%d"),
-            user_id=1  # temporary
+            user_id=current_user.id
         )
 
         db.session.add(expense)

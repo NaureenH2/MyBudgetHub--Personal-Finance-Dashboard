@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify
+from flask_login import login_required, current_user
 from datetime import date, timedelta
 from models import Expense
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
 @dashboard_bp.route("/dashboard/weekly")
+@login_required
 def weekly_summary():
     today = date.today()
 
@@ -14,12 +16,14 @@ def weekly_summary():
 
     this_week_total = sum(
         e.amount for e in Expense.query.filter(
+            Expense.user_id == current_user.id,
             Expense.date >= start_this_week
         ).all()
     )
 
     last_week_total = sum(
         e.amount for e in Expense.query.filter(
+            Expense.user_id == current_user.id,
             Expense.date >= start_last_week,
             Expense.date <= end_last_week
         ).all()
