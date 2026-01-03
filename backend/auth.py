@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_user, logout_user, login_required
 from models import db, User
+from flask_login import current_user
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -42,3 +43,12 @@ def login():
 def logout():
     logout_user()
     return jsonify({"message": "Logged out successfully"})
+
+@auth_bp.route("/status", methods=["GET"])
+def status():
+    if current_user.is_authenticated:
+        return jsonify({
+            "authenticated": True,
+            "email": current_user.email
+        })
+    return jsonify({ "authenticated": False })
