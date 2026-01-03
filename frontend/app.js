@@ -233,3 +233,12 @@ function renderWeeklyComparison(expenses) {
   el.innerText =
     `📅 ${arrow} ${Math.abs(percent).toFixed(1)}% vs last week`;
 }
+
+document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+  await fetch("http://127.0.0.1:5000/auth/logout", {
+    method: "POST",
+    credentials: "include"
+  });
+
+  window.location.href = "frontpage.html";
+});
