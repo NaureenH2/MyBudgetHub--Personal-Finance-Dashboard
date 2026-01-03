@@ -158,6 +158,19 @@
   </div>
 
   <script>
+    async function redirectIfLoggedIn() {
+      const response = await fetch("http://127.0.0.1:5000/auth/status", {
+        credentials: "include"
+      });
+      const data = await response.json();
+      if (data.authenticated) {
+        window.location.href = "index.html";
+      }
+    }
+    redirectIfLoggedIn();
+  </script>
+
+  <script>
     const form = document.getElementById('registerForm');
     const errorMessage = document.getElementById('errorMessage');
     const successMessage = document.getElementById('successMessage');
