@@ -66,17 +66,13 @@ let budgetChart = null;
 
 function renderExpenseChart(expenses) {
   const totals = {};
-
   expenses.forEach(e => {
     totals[e.category] = (totals[e.category] || 0) + e.amount;
   });
-
   const ctx = document.getElementById("expenseChart").getContext("2d");
-
   if (expenseChart) {
     expenseChart.destroy();
   }
-
   expenseChart = new Chart(ctx, {
     type: "pie",
     data: {
