@@ -1,27 +1,64 @@
 async function loadBudgets() {
-  const response = await fetch("http://127.0.0.1:5000/budgets");
-  const budgets = await response.json();
-
-  console.log("Budgets:", budgets);
-  renderBudgetBarChart(budgets);
-  renderBudgetWarnings(budgets);
+  try {
+    const response = await fetch("http://127.0.0.1:5000/budgets", {
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      if (response.status === 401) {
+        // Not authenticated, redirect will be handled by auth.js
+        return;
+      }
+      throw new Error('Failed to load budgets');
+    }
+    
+    const budgets = await response.json();
+    console.log("Budgets:", budgets);
+    renderBudgetBarChart(budgets);
+    renderBudgetWarnings(budgets);
+  } catch (error) {
+    console.error('Error loading budgets:', error);
+  }
 }
 
 async function loadExpenses() {
-  const response = await fetch("http://127.0.0.1:5000/expenses");
-  const expenses = await response.json();
-
-  console.log("Expenses:", expenses);
-  renderExpenseChart(expenses);
-  renderMonthlyLineChart(expenses);
-  renderMonthlyTotal(expenses);
-  renderTopCategory(expenses);
-  renderMonthComparison(expenses);
-  renderWeeklyComparison(expenses);
+  try {
+    const response = await fetch("http://127.0.0.1:5000/expenses", {
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      if (response.status === 401) {
+        // Not authenticated, redirect will be handled by auth.js
+        return;
+      }
+      throw new Error('Failed to load expenses');
+    }
+    
+    const expenses = await response.json();
+    console.log("Expenses:", expenses);
+    renderExpenseChart(expenses);
+    renderMonthlyLineChart(expenses);
+    renderMonthlyTotal(expenses);
+    renderTopCategory(expenses);
+    renderMonthComparison(expenses);
+    renderWeeklyComparison(expenses);
+  } catch (error) {
+    console.error('Error loading expenses:', error);
+  }
 }
 
-loadBudgets();
-loadExpenses();
+// Wait for auth check before loading data
+// This ensures we only load data if authenticated
+// The auth check in index.html will redirect if not authenticated,
+// so we can safely load data here
+document.addEventListener('DOMContentLoaded', () => {
+  // Small delay to ensure auth check completes first
+  setTimeout(() => {
+    loadBudgets();
+    loadExpenses();
+  }, 100);
+});
 
 let expenseChart = null;
 let monthlyChart = null;
@@ -234,11 +271,5 @@ function renderWeeklyComparison(expenses) {
     `📅 ${arrow} ${Math.abs(percent).toFixed(1)}% vs last week`;
 }
 
-document.getElementById("logoutBtn")?.addEventListener("click", async () => {
-  await fetch("http://127.0.0.1:5000/auth/logout", {
-    method: "POST",
-    credentials: "include"
-  });
-
-  window.location.href = "frontpage.html";
-});
+// Logout is now handled by auth.js
+// The logout button with data-logout-btn attribute will be automatically handled

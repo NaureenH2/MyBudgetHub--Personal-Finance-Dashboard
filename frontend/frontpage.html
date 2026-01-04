@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Welcome — MyBudgetHub</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="auth.js"></script>
 </head>
 <body>
 
@@ -16,12 +17,24 @@
       understand your spending — all in one place.
     </p>
 
-    <div class="frontpage-actions">
+    <!-- Show login/register buttons only if not authenticated -->
+    <div class="frontpage-actions" data-auth="unauthenticated">
       <a href="login.html" class="btn primary">Log In</a>
       <a href="register.html" class="btn secondary">Create Account</a>
     </div>
 
+    <!-- Show dashboard link if authenticated -->
+    <div class="frontpage-actions" data-auth="authenticated" style="display: none;">
+      <a href="index.html" class="btn primary">Go to Dashboard</a>
+      <button data-logout-btn class="btn secondary">Log Out</button>
+    </div>
+
   </div>
+
+  <script>
+    // Redirect to dashboard if already authenticated, otherwise show appropriate UI
+    initAuth({ redirectIfAuth: true });
+  </script>
 
 </body>
 </html>
