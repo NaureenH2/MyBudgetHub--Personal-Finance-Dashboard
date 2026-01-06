@@ -7,65 +7,75 @@
   <script src="auth.js"></script>
   <style>
     body {
-      background: #f9fafb;
-      color: #1f2937;
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #0f172a, #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #f9fafb;
     }
 
     .frontpage-container {
       max-width: 520px;
-      margin: 120px auto;
-      padding: 3rem 2.5rem;
+      padding: 3rem 2.75rem;
+      background: rgba(243, 244, 246, 0.08);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
       text-align: center;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     }
 
     .frontpage-container h1 {
-      font-size: 2.25rem;
+      font-size: 2.4rem;
       margin-bottom: 0.75rem;
-      color: #1e3a8a; /* deep blue */
+      color: #ffffff;
+      letter-spacing: -0.5px;
     }
 
     .tagline {
       font-size: 1.05rem;
-      color: #4b5563;
-      margin-bottom: 2.5rem;
-      line-height: 1.6;
+      color: #d1d5db;
+      margin-bottom: 2.75rem;
+      line-height: 1.65;
     }
 
     .frontpage-actions {
       display: flex;
-      gap: 1rem;
       justify-content: center;
+      gap: 1.25rem;
     }
 
     .btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+      padding: 0.75rem 1.75rem;
+      border-radius: 10px;
       font-weight: 600;
       text-decoration: none;
       transition: all 0.2s ease;
     }
 
     .btn.primary {
-      background: #1e3a8a;
+      background: #2563eb;
       color: white;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
     }
 
     .btn.primary:hover {
-      background: #1e40af;
+      background: #1d4ed8;
+      transform: translateY(-1px);
     }
 
     .btn.secondary {
-      border: 2px solid #1e3a8a;
-      color: #1e3a8a;
       background: transparent;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      color: #e5e7eb;
     }
 
     .btn.secondary:hover {
-      background: #eef2ff;
+      background: rgba(255, 255, 255, 0.08);
     }
   </style>
 </head>
