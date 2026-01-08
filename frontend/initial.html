@@ -177,6 +177,49 @@
     });
   </script>
 
+  <script>
+    const form = document.getElementById("budgetForm");
+    const list = document.getElementById("budgetList");
+    const continueBtn = document.getElementById("continueBtn");
+
+    let budgetsCreated = 0;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const category = document.getElementById("category").value.trim();
+      const limit = document.getElementById("limit").value;
+
+      if (!category || !limit) return;
+
+      const res = await fetch("http://127.0.0.1:5000/budgets", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, limit })
+      });
+
+      if (!res.ok) {
+        alert("Failed to create budget");
+        return;
+      }
+
+      // Update UI
+      const li = document.createElement("li");
+      li.textContent = `✔ ${category} — $${limit}`;
+      list.appendChild(li);
+
+      budgetsCreated++;
+      continueBtn.style.display = "inline-block";
+
+      form.reset();
+    });
+
+    continueBtn.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+  </script>
+
 </body>
 </html>
 
