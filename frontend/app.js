@@ -269,3 +269,64 @@ function renderWeeklyComparison(expenses) {
 
 // Logout is now handled by auth.js
 // The logout button with data-logout-btn attribute will be automatically handled
+
+const API_BASE = 'http://127.0.0.1:5000';
+
+/* Fetch budgets */
+async function loadBudgets() {
+  const res = await fetch(`${API_BASE}/budgets`, {
+    credentials: 'include'
+  });
+
+  const budgets = await res.json();
+  renderBudgets(budgets);
+}
+
+/* Render budgets */
+function renderBudgets(budgets) {
+  const container = document.getElementById('budgetsList');
+  container.innerHTML = '';
+
+  if (budgets.length === 0) {
+    container.innerHTML = '<p>No budgets yet.</p>';
+    return;
+  }
+
+  budgets.forEach(b => {
+    const div = document.createElement('div');
+    div.className = 'budget-card';
+
+    div.innerHTML = `
+      <h4>${b.category}</h4>
+      <p>Limit: $${b.limit}</p>
+      <p>Spent: $${b.spent}</p>
+      <p>Remaining: $${b.remaining}</p>
+      <div class="progress">
+        <div
+          class="progress-bar ${b.alert_level}"
+          style="width: ${Math.min(b.percent_used, 100)}%"
+        ></div>
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+/* Create budget */
+document.getElementById('budgetForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const category = document.getElementById('budgetCategory').value;
+  const limit = document.getElementById('budgetLimit').value;
+
+  await fetch(`${API_BASE}/budgets`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ category, limit })
+  });
+
+  e.target.reset();
+  loadBudgets();
+});
