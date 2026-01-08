@@ -244,10 +244,10 @@
           successMessage.textContent = data.message || 'Account created successfully! Redirecting...';
           successMessage.classList.add('show');
           
-          // Redirect to login page after 2 seconds
+          // Redirect to initial welcome page after 1.5 seconds
           setTimeout(() => {
-            window.location.href = 'login.html';
-          }, 2000);
+            window.location.href = 'initial.html';
+          }, 1500);
         } else {
           errorMessage.textContent = data.error || 'Registration failed. Please try again.';
           errorMessage.classList.add('show');

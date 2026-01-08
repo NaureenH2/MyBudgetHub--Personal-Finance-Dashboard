@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome — MyBudgetHub</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="auth.js"></script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #0f172a, #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #f9fafb;
+      padding: 2rem;
+    }
+
+    .initial-container {
+      max-width: 600px;
+      padding: 3rem 2.75rem;
+      background: rgba(243, 244, 246, 0.08);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      text-align: center;
+    }
+
+    .initial-container h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .initial-container h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #60a5fa;
+      letter-spacing: -0.3px;
+    }
+
+    .initial-container p {
+      font-size: 1.1rem;
+      color: #d1d5db;
+      margin-bottom: 2rem;
+      line-height: 1.75;
+    }
+
+    .features-list {
+      text-align: left;
+      margin: 2rem 0;
+      color: #e5e7eb;
+    }
+
+    .features-list li {
+      margin-bottom: 1rem;
+      padding-left: 0.5rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .features-list li::marker {
+      color: #2563eb;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+      transition: all 0.2s ease;
+      margin-top: 1rem;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .initial-container {
+        padding: 2rem 1.5rem;
+      }
+
+      .initial-container h1 {
+        font-size: 2.2rem;
+      }
+
+      .initial-container h2 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="initial-container">
+    <h1>Welcome to MyBudgetHub!</h1>
+    <h2>🎉 Your account has been created successfully</h2>
+    
+    <p>
+      You're all set! Start taking control of your finances with our powerful budgeting tools.
+    </p>
+
+    <div class="features-list">
+      <ul>
+        <li><strong>Track Expenses</strong> - Monitor all your spending in one place</li>
+        <li><strong>Manage Budgets</strong> - Set limits and stay on track</li>
+        <li><strong>Visual Insights</strong> - See your spending patterns with interactive charts</li>
+        <li><strong>Stay Organized</strong> - Categorize and analyze your financial data</li>
+      </ul>
+    </div>
+
+    <a href="index.html" class="btn-primary">Go to Dashboard</a>
+  </div>
+
+  <script>
+    // Require authentication - only logged in users (who just registered) can access
+    initAuth({ 
+      requireAuth: true,
+      onAuthStateChange: (authState) => {
+        // If not authenticated, redirect to login
+        if (!authState.authenticated) {
+          window.location.href = 'login.html';
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
+
