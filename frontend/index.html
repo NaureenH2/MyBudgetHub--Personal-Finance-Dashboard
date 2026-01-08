@@ -189,6 +189,34 @@
     </div>
   </header>
 
+  <!-- BUDGET CARDS -->
+  <section id="budgets-section">
+  <h2>Budgets</h2>
+
+  <form id="budgetForm" style="margin-bottom: 1.5rem;">
+    <input
+      type="text"
+      id="budgetCategory"
+      placeholder="Category (e.g. Food)"
+      required
+    />
+
+    <input
+      type="number"
+      id="budgetLimit"
+      placeholder="Monthly Limit"
+      required
+      min="1"
+    />
+
+    <button type="submit" class="btn-submit">
+      Add Budget
+    </button>
+  </form>
+
+  <div id="budgetsList"></div>
+</section>
+
   <!-- SUMMARY CARDS -->
   <div class="summary-grid">
 
