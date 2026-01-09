@@ -289,20 +289,60 @@ function renderBudgets(budgets) {
     div.className = 'budget-card';
 
     div.innerHTML = `
-      <h4>${b.category}</h4>
-      <p>Limit: $${b.limit}</p>
-      <p>Spent: $${b.spent}</p>
-      <p>Remaining: $${b.remaining}</p>
-      <div class="progress">
-        <div
-          class="progress-bar ${b.alert_level}"
-          style="width: ${Math.min(b.percent_used, 100)}%"
-        ></div>
-      </div>
-    `;
+    <h4>${b.category}</h4>
+    <p>Limit: $${b.limit}</p>
+    <p>Spent: $${b.spent}</p>
+    <p>Remaining: $${b.remaining}</p>
 
+    <div class="progress">
+      <div
+        class="progress-bar ${b.alert_level}"
+        style="width: ${Math.min(b.percent_used, 100)}%"
+      ></div>
+    </div>
+
+    <div class="budget-actions">
+      <button class="btn-edit" onclick="editBudget(${b.id}, '${b.category}', ${b.limit})">
+        ✏️ Edit
+      </button>
+      <button class="btn-delete" onclick="deleteBudget(${b.id})">
+        🗑 Delete
+      </button>
+    </div>
+  `;
     container.appendChild(div);
   });
+}
+
+async function editBudget(id, currentCategory, currentLimit) {
+  const newCategory = prompt("Edit category:", currentCategory);
+  if (!newCategory) return;
+
+  const newLimit = prompt("Edit budget limit:", currentLimit);
+  if (!newLimit || isNaN(newLimit)) return;
+
+  await fetch(`${API_BASE}/budgets/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({
+      category: newCategory,
+      limit: newLimit
+    })
+  });
+
+  loadBudgets();
+}
+
+async function deleteBudget(id) {
+  if (!confirm("Delete this budget?")) return;
+
+  await fetch(`${API_BASE}/budgets/${id}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  });
+
+  loadBudgets();
 }
 
 /* Create budget */
