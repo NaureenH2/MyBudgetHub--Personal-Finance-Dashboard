@@ -219,7 +219,7 @@
 
   </div>
 
-  <!-- BUDGET CARDS -->
+  <!-- BUDGET -->
   <section id="budgets-section">
   <h2>Budgets</h2>
 
@@ -245,6 +245,40 @@
   </form>
 
   <div id="budgetsList"></div>
+  </section>
+
+  <!-- EXPENSES -->
+   <section class="expenses-section">
+    <h2>Expenses</h2>
+
+    <!-- Add Expense -->
+    <form id="expense-form">
+      <input type="text" id="expense-description" placeholder="Description" required />
+      <input type="number" id="expense-amount" placeholder="Amount" step="0.01" required />
+      <input type="text" id="expense-category" placeholder="Category" required />
+      <input type="date" id="expense-date" required />
+      <button type="submit">Add Expense</button>
+    </form>
+
+    <!-- CSV Controls -->
+    <div class="csv-controls">
+      <button id="export-expenses">Export CSV</button>
+      <input type="file" id="import-expenses" accept=".csv" />
+    </div>
+
+    <!-- Expenses List -->
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="expenses-body"></tbody>
+    </table>
   </section>
 
   <!-- CHARTS -->
