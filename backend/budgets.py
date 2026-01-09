@@ -55,7 +55,6 @@ def get_budgets():
             )
         })
 
-
     return jsonify(result)
 
 @budgets_bp.route("/budgets/<int:budget_id>", methods=["PUT"])
