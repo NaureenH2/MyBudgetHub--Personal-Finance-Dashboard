@@ -57,3 +57,40 @@ def get_budgets():
 
 
     return jsonify(result)
+
+@budgets_bp.route("/budgets/<int:budget_id>", methods=["PUT"])
+@login_required
+def update_budget(budget_id):
+    data = request.get_json()
+
+    budget = Budget.query.filter_by(
+        id=budget_id,
+        user_id=current_user.id
+    ).first()
+
+    if not budget:
+        return jsonify({"error": "Budget not found"}), 404
+
+    budget.category = data.get("category", budget.category)
+    budget.limit = float(data.get("limit", budget.limit))
+
+    db.session.commit()
+
+    return jsonify({"message": "Budget updated"})
+
+
+@budgets_bp.route("/budgets/<int:budget_id>", methods=["DELETE"])
+@login_required
+def delete_budget(budget_id):
+    budget = Budget.query.filter_by(
+        id=budget_id,
+        user_id=current_user.id
+    ).first()
+
+    if not budget:
+        return jsonify({"error": "Budget not found"}), 404
+
+    db.session.delete(budget)
+    db.session.commit()
+
+    return jsonify({"message": "Budget deleted"})
