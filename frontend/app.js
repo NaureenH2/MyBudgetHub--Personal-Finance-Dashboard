@@ -314,6 +314,24 @@ function renderBudgets(budgets) {
   });
 }
 
+/* Create budget */
+document.getElementById('budgetForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const category = document.getElementById('budgetCategory').value;
+  const limit = document.getElementById('budgetLimit').value;
+
+  await fetch(`${API_BASE}/budgets`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ category, limit })
+  });
+
+  e.target.reset();
+  loadBudgets();
+});
+
 async function editBudget(id, currentCategory, currentLimit) {
   const newCategory = prompt("Edit category:", currentCategory);
   if (!newCategory) return;
@@ -344,21 +362,3 @@ async function deleteBudget(id) {
 
   loadBudgets();
 }
-
-/* Create budget */
-document.getElementById('budgetForm').addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const category = document.getElementById('budgetCategory').value;
-  const limit = document.getElementById('budgetLimit').value;
-
-  await fetch(`${API_BASE}/budgets`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ category, limit })
-  });
-
-  e.target.reset();
-  loadBudgets();
-});
