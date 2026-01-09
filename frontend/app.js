@@ -1,23 +1,25 @@
 async function loadBudgets() {
   try {
-    const response = await fetch("http://127.0.0.1:5000/budgets", {
+    const res = await fetch(`${API_BASE}/budgets`, {
       credentials: 'include'
     });
-    
-    if (!response.ok) {
-      if (response.status === 401) {
-        // Not authenticated, redirect will be handled by auth.js
-        return;
-      }
-      throw new Error('Failed to load budgets');
+
+    if (!res.ok) {
+      if (res.status === 401) return;
+      throw new Error("Failed to load budgets");
     }
-    
-    const budgets = await response.json();
-    console.log("Budgets:", budgets);
+
+    const budgets = await res.json();
+
+    // Existing visuals
     renderBudgetBarChart(budgets);
     renderBudgetWarnings(budgets);
-  } catch (error) {
-    console.error('Error loading budgets:', error);
+
+    // Budget list UI
+    renderBudgets(budgets);
+
+  } catch (err) {
+    console.error("Error loading budgets:", err);
   }
 }
 
@@ -271,16 +273,6 @@ function renderWeeklyComparison(expenses) {
 // The logout button with data-logout-btn attribute will be automatically handled
 
 const API_BASE = 'http://127.0.0.1:5000';
-
-/* Fetch budgets */
-async function loadBudgets() {
-  const res = await fetch(`${API_BASE}/budgets`, {
-    credentials: 'include'
-  });
-
-  const budgets = await res.json();
-  renderBudgets(budgets);
-}
 
 /* Render budgets */
 function renderBudgets(budgets) {
