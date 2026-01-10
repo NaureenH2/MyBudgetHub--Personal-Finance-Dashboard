@@ -45,6 +45,11 @@ async function loadExpenses() {
     renderTopCategory(expenses);
     renderMonthComparison(expenses);
     renderWeeklyComparison(expenses);
+
+    if (typeof renderExpenseTable === 'function') {
+      renderExpenseTable();
+    }
+  
   } catch (error) {
     console.error('Error loading expenses:', error);
   }
