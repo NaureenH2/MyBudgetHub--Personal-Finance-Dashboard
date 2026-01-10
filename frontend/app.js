@@ -294,7 +294,7 @@ function renderBudgets(budgets) {
     <p style="margin: 0.5rem 0;">Spent: $${b.spent}</p>
     <p style="margin: 0.5rem 0;">Remaining: $${b.remaining}</p>
     
-    <div class="budget-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end; margin: 1rem 0;">
+    <div class="budget-actions" style="display: flex; gap: 0.5rem; margin: 1rem 0;">
       <button class="btn-submit" onclick="editBudget(${b.id}, '${b.category}', ${b.limit})">
         ✏️ Edit
       </button>
