@@ -1,53 +1,65 @@
-const API_BASE = 'http://127.0.0.1:5000';
+// Don't redeclare API_BASE - it's already in app.js
 
 document.addEventListener("DOMContentLoaded", () => {
   // Add expense
-  document.getElementById("expense-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  const expenseForm = document.getElementById("expense-form");
+  if (expenseForm) {
+    expenseForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const data = {
-      description: document.getElementById("expense-description").value,
-      amount: document.getElementById("expense-amount").value,
-      category: document.getElementById("expense-category").value,
-      date: document.getElementById("expense-date").value
-    };
+      const data = {
+        description: document.getElementById("expense-description").value,
+        amount: document.getElementById("expense-amount").value,
+        category: document.getElementById("expense-category").value,
+        date: document.getElementById("expense-date").value
+      };
 
-    const res = await fetch(`${API_BASE}/expenses`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(data)
+      const res = await fetch(`${API_BASE}/expenses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        e.target.reset();
+        // Reload all data
+        loadExpenses();
+        loadBudgets();
+      }
     });
-
-    if (res.ok) {
-      e.target.reset();
-      // Reload all data
-      loadExpenses();
-      loadBudgets();
-    }
-  });
+  }
 
   // Export CSV
-  document.getElementById("export-expenses").addEventListener("click", () => {
-    window.location.href = `${API_BASE}/expenses/export`;
-  });
+  const exportBtn = document.getElementById("export-expenses");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", () => {
+      window.location.href = `${API_BASE}/expenses/export`;
+    });
+  }
 
   // Import CSV
-  document.getElementById("import-expenses").addEventListener("change", async (e) => {
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
+  const importInput = document.getElementById("import-expenses");
+  if (importInput) {
+    importInput.addEventListener("change", async (e) => {
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
 
-    const res = await fetch(`${API_BASE}/expenses/import`, {
-      method: "POST",
-      credentials: "include",
-      body: formData
+      const res = await fetch(`${API_BASE}/expenses/import`, {
+        method: "POST",
+        credentials: "include",
+        body: formData
+      });
+
+      if (res.ok) {
+        loadExpenses();
+        loadBudgets();
+      }
     });
+  }
 
-    if (res.ok) {
-      loadExpenses();
-      loadBudgets();
-    }
-  });
+  // Render expense table
+  renderExpenseTable();
 });
 
 async function deleteExpense(id) {
@@ -58,6 +70,7 @@ async function deleteExpense(id) {
 
   loadExpenses();
   loadBudgets();
+  renderExpenseTable();
 }
 
 async function renderExpenseTable() {
@@ -65,6 +78,8 @@ async function renderExpenseTable() {
   const expenses = await res.json();
 
   const tbody = document.getElementById("expenses-body");
+  if (!tbody) return;
+  
   tbody.innerHTML = "";
 
   expenses.forEach(e => {
@@ -81,8 +96,3 @@ async function renderExpenseTable() {
     tbody.appendChild(row);
   });
 }
-
-// Call this when expenses are loaded
-setTimeout(() => {
-  renderExpenseTable();
-}, 200);
