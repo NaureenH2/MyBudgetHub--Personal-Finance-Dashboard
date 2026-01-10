@@ -225,22 +225,26 @@
   <h2>Budgets</h2>
 
   <form id="budgetForm" style="margin-bottom: 1.5rem;">
-    <input
-      type="text"
-      id="budgetCategory"
-      placeholder="Category (e.g. Food)"
-      required
-    />
+    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+      <input
+        type="text"
+        id="budgetCategory"
+        placeholder="Category (e.g. Food)"
+        required
+        style="flex:1; padding:0.75rem; border-radius:8px; border:none;"
+      />
 
-    <input
-      type="number"
-      id="budgetLimit"
-      placeholder="Monthly Limit"
-      required
-      min="1"
-    />
+      <input
+        type="number"
+        id="budgetLimit"
+        placeholder="Monthly Limit"
+        min="1"
+        required
+        style="flex:1; padding:0.75rem; border-radius:8px; border:none;"
+      />
+    </div>
 
-    <button type="submit" class="btn-submit">
+    <button type="submit" class="btn-primary" style="margin-top:1rem;">
       Add Budget
     </button>
   </form>
