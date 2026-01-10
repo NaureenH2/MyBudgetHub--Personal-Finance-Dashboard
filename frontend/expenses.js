@@ -1,5 +1,3 @@
-// Don't redeclare API_BASE - it's already in app.js
-
 document.addEventListener("DOMContentLoaded", () => {
   // Add expense
   const expenseForm = document.getElementById("expense-form");
