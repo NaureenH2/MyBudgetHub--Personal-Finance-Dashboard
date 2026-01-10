@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     e.target.reset();
-    loadExpenses();
+    await loadExpenses();
+    await loadBudgets();
   });
 
   // Export CSV
@@ -39,7 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
       body: formData
     });
 
-    loadExpenses();
+    await loadExpenses();
+    await loadBudgets();
   });
 });
 
@@ -71,5 +73,6 @@ async function deleteExpense(id) {
     credentials: "include"
   });
 
-  loadExpenses();
+  await loadExpenses();
+  await loadBudgets();
 }

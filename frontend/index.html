@@ -253,21 +253,47 @@
   </section>
 
   <!-- EXPENSES -->
-   <section class="expenses-section">
+  <section class="expenses-section">
     <h2>Expenses</h2>
 
     <!-- Add Expense -->
-    <form id="expense-form">
-      <input type="text" id="expense-description" placeholder="Description" required />
-      <input type="number" id="expense-amount" placeholder="Amount" step="0.01" required />
-      <input type="text" id="expense-category" placeholder="Category" required />
-      <input type="date" id="expense-date" required />
-      <button type="submit">Add Expense</button>
+    <form id="expense-form" style="margin-bottom: 1.5rem;">
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+        <input 
+          type="text" 
+          id="expense-description" 
+          placeholder="Description" 
+          required 
+          style="width:180px; padding:0.75rem; border-radius:8px; border:none;"
+        />
+        <input 
+          type="number" 
+          id="expense-amount" 
+          placeholder="Amount" 
+          step="0.01" 
+          required 
+          style="width:180px; padding:0.75rem; border-radius:8px; border:none;"
+        />
+        <input 
+          type="text" 
+          id="expense-category" 
+          placeholder="Category" 
+          required 
+          style="width:180px; padding:0.75rem; border-radius:8px; border:none;"
+        />
+        <input 
+          type="date" 
+          id="expense-date" 
+          required 
+          style="width:180px; padding:0.75rem; border-radius:8px; border:none;"
+        />
+        <button type="submit" class="btn-submit">Add Expense</button>
+      </div>
     </form>
 
     <!-- CSV Controls -->
-    <div class="csv-controls">
-      <button id="export-expenses">Export CSV</button>
+    <div class="csv-controls" style="display:flex; gap:1rem; align-items:center; margin-bottom:1.5rem;">
+      <button id="export-expenses" class="btn-submit">Export CSV</button>
       <input type="file" id="import-expenses" accept=".csv" />
     </div>
 
