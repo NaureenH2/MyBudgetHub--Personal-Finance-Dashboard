@@ -290,8 +290,8 @@ function renderBudgets(budgets) {
 
     div.innerHTML = `
     <h4>${b.category}</h4>
-    <p>Limit: $${b.limit}</p>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+    <p style="margin: 0.25rem 0;">Limit: $${b.limit}</p>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.25rem 0;">
       <p style="margin: 0;">Spent: $${b.spent}</p>
       <div class="budget-actions" style="display: flex; gap: 0.5rem;">
         <button class="btn-submit" onclick="editBudget(${b.id}, '${b.category}', ${b.limit})">
@@ -302,7 +302,7 @@ function renderBudgets(budgets) {
         </button>
       </div>
     </div>
-    <p>Remaining: $${b.remaining}</p>
+    <p style="margin: 0.25rem 0;">Remaining: $${b.remaining}</p>
 
     <div class="progress">
       <div
