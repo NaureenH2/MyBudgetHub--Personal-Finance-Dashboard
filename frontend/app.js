@@ -31,7 +31,6 @@ async function loadExpenses() {
     
     if (!response.ok) {
       if (response.status === 401) {
-        // Not authenticated, redirect will be handled by auth.js
         return;
       }
       throw new Error('Failed to load expenses');
@@ -45,11 +44,11 @@ async function loadExpenses() {
     renderTopCategory(expenses);
     renderMonthComparison(expenses);
     renderWeeklyComparison(expenses);
-
+    
+    // Also update the expense table
     if (typeof renderExpenseTable === 'function') {
       renderExpenseTable();
     }
-  
   } catch (error) {
     console.error('Error loading expenses:', error);
   }
