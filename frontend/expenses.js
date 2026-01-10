@@ -1,5 +1,6 @@
+const API_BASE = 'http://127.0.0.1:5000';
+
 document.addEventListener("DOMContentLoaded", () => {
-  loadExpenses();
 
   // Add expense
   document.getElementById("expense-form").addEventListener("submit", async (e) => {
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       date: document.getElementById("expense-date").value
     };
 
-    await fetch("/expenses", {
+    await fetch(`${API_BASE}/expenses`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Export CSV
   document.getElementById("export-expenses").addEventListener("click", () => {
-    window.location.href = "/expenses/export";
+    window.location.href = `${API_BASE}/expenses/export`;
   });
 
   // Import CSV
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
 
-    await fetch("/expenses/import", {
+    await fetch(`${API_BASE}/expenses/import`, {
       method: "POST",
       credentials: "include",
       body: formData
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loadExpenses() {
-  const res = await fetch("/expenses", { credentials: "include" });
+  const res = await fetch(`${API_BASE}/expenses`, { credentials: "include" });
   const expenses = await res.json();
 
   const tbody = document.getElementById("expenses-body");
@@ -68,7 +69,7 @@ async function loadExpenses() {
 }
 
 async function deleteExpense(id) {
-  await fetch(`/expenses/${id}`, {
+  await fetch(`${API_BASE}/expenses/${id}`, {
     method: "DELETE",
     credentials: "include"
   });
