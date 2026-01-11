@@ -1,3 +1,5 @@
+const API_BASE = 'http://127.0.0.1:5000';
+
 async function loadBudgets() {
   try {
     const res = await fetch(`${API_BASE}/budgets`, {
@@ -55,15 +57,35 @@ async function loadExpenses() {
 }
 
 // Wait for auth check before loading data
-// This ensures we only load data if authenticated
-// The auth check in index.html will redirect if not authenticated,
-// so we can safely load data here
 document.addEventListener('DOMContentLoaded', () => {
   // Small delay to ensure auth check completes first
   setTimeout(() => {
     loadBudgets();
     loadExpenses();
   }, 100);
+
+  // Budget form handler
+  const budgetForm = document.getElementById('budgetForm');
+  if (budgetForm) {
+    budgetForm.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const category = document.getElementById('budgetCategory').value;
+      const limit = document.getElementById('budgetLimit').value;
+
+      const res = await fetch(`${API_BASE}/budgets`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ category, limit })
+      });
+
+      if (res.ok) {
+        e.target.reset();
+        loadBudgets();
+      }
+    });
+  }
 });
 
 let expenseChart = null;
@@ -273,11 +295,6 @@ function renderWeeklyComparison(expenses) {
     `📅 ${arrow} ${Math.abs(percent).toFixed(1)}% vs last week`;
 }
 
-// Logout is now handled by auth.js
-// The logout button with data-logout-btn attribute will be automatically handled
-
-const API_BASE = 'http://127.0.0.1:5000';
-
 /* Render budgets */
 function renderBudgets(budgets) {
   const container = document.getElementById('budgetsList');
@@ -298,7 +315,7 @@ function renderBudgets(budgets) {
     <p style="margin: 0.5rem 0;">Spent: $${b.spent}</p>
     <p style="margin: 0.5rem 0;">Remaining: $${b.remaining}</p>
     
-    <div class="budget-actions" style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+    <div class="budget-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end; margin: 1rem 0;">
       <button class="btn-submit" onclick="editBudget(${b.id}, '${b.category}', ${b.limit})">
         ✏️ Edit
       </button>
@@ -317,24 +334,6 @@ function renderBudgets(budgets) {
     container.appendChild(div);
   });
 }
-
-/* Create budget */
-document.getElementById('budgetForm').addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const category = document.getElementById('budgetCategory').value;
-  const limit = document.getElementById('budgetLimit').value;
-
-  await fetch(`${API_BASE}/budgets`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ category, limit })
-  });
-
-  e.target.reset();
-  loadBudgets();
-});
 
 async function editBudget(id, currentCategory, currentLimit) {
   const newCategory = prompt("Edit category:", currentCategory);
