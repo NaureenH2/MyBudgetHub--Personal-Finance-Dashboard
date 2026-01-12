@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_login import LoginManager
@@ -12,7 +12,10 @@ from dashboard import dashboard_bp
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder='../Frontend',
+            static_folder='../Frontend',
+            static_url_path='')
 CORS(app, supports_credentials=True)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
@@ -41,7 +44,23 @@ app.register_blueprint(dashboard_bp)
 
 @app.route("/")
 def home():
-    return "MyBudgetHub backend running!"
+    return render_template('index.html')
+
+@app.route("/login.html")
+def login():
+    return render_template('login.html')
+
+@app.route("/register.html")
+def register():
+    return render_template('register.html')
+
+@app.route("/initial.html")
+def initial():
+    return render_template('initial.html')
+
+@app.route("/frontpage.html")
+def frontpage():
+    return render_template('frontpage.html')
 
 if __name__ == "__main__":
     with app.app_context():
