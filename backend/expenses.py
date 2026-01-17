@@ -160,8 +160,8 @@ def import_expenses():
     if not file.filename.endswith(".csv"):
         return {"error": "Invalid file type"}, 400
     
-    Expense.query.filter_by(user_id=current_user.id).delete()
-    db.session.commit()
+    # Expense.query.filter_by(user_id=current_user.id).delete()
+    # db.session.commit()
 
     stream = file.stream.read().decode("utf-8").splitlines()
     reader = csv.DictReader(stream)
@@ -169,16 +169,30 @@ def import_expenses():
     imported = 0
 
     for row in reader:
-        amount = float(row["Amount"])
+        # Handle both lowercase and uppercase headers
+        description = row.get("description") or row.get("Description")
+        amount = float(row.get("amount") or row.get("Amount"))
+        category = row.get("category") or row.get("Category") or auto_category(description)
+        date_str = row.get("date") or row.get("Date")
+        
+        # Handle different date formats
+        try:
+            # Try YYYY-MM-DD format first
+            date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        except ValueError:
+            try:
+                # Try M/D/YYYY format
+                date_obj = datetime.strptime(date_str, "%m/%d/%Y")
+            except ValueError:
+                # Try other common formats
+                date_obj = datetime.strptime(date_str, "%d/%m/%Y")
 
-        if amount >= 0:
-            continue  # skip income for now
-
+        # Accept all expenses (positive or negative)
         expense = Expense(
-            description=row["Description"],
-            amount=abs(amount),
-            category=auto_category(row["Description"]),
-            date=datetime.strptime(row["Date"], "%Y-%m-%d"),
+            description=description,
+            amount=abs(amount),  # Always store as positive
+            category=category,
+            date=date_obj,
             user_id=current_user.id
         )
 
