@@ -348,8 +348,10 @@
 
     <!-- CSV Controls -->
     <div class="csv-controls" style="display:flex; gap:1rem; align-items:center; margin-bottom:1.5rem;">
+      <label for="import-expenses" class="btn-submit" style="cursor: pointer;">Import CSV</label>
+      <input type="file" id="import-expenses" accept=".csv" style="display: none;" />
+      <span id="file-name" style="color: #d1d5db; font-size: 0.9rem;">No file chosen</span>
       <button id="export-expenses" class="btn-submit">Export CSV</button>
-      <input type="file" id="import-expenses" accept=".csv" />
     </div>
 
     <!-- Expenses List -->
