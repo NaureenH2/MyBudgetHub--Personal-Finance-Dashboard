@@ -40,18 +40,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const importInput = document.getElementById("import-expenses");
   if (importInput) {
     importInput.addEventListener("change", async (e) => {
-      const formData = new FormData();
-      formData.append("file", e.target.files[0]);
+      const file = e.target.files[0];
+      const fileNameSpan = document.getElementById("file-name");
+      
+      if (file) {
+        // Update the filename display
+        fileNameSpan.textContent = file.name;
+        
+        const formData = new FormData();
+        formData.append("file", file);
 
-      const res = await fetch(`${API_BASE}/expenses/import`, {
-        method: "POST",
-        credentials: "include",
-        body: formData
-      });
+        const res = await fetch(`${API_BASE}/expenses/import`, {
+          method: "POST",
+          credentials: "include",
+          body: formData
+        });
 
-      if (res.ok) {
-        loadExpenses();
-        loadBudgets();
+        if (res.ok) {
+          loadExpenses();
+          loadBudgets();
+          // Reset after successful import
+          fileNameSpan.textContent = "No file chosen";
+          e.target.value = '';
+        }
       }
     });
   }
