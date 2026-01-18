@@ -33,11 +33,14 @@ MyBudgetHub is a full-stack personal finance web application that helps users tr
 
 **Frontend:** HTML, CSS, JavaScript, Chart.js
 
-**Backend** Python, Flask, Flask-Login
+**Backend:** Python, Flask, Flask-Login
 
-**Database** PostgreSQL, SQLAlchemy (Flask-SQLAlchemy through ORM)
+**Database:** PostgreSQL, SQLAlchemy (Flask-SQLAlchemy through ORM)
 
 ## How to run locally:
 
-### 1. Clone the repository
-### 2. Create and activate a virtual environment
+**1. Clone the repository**
+**2. Create and activate a virtual environment**
+    python -m venv venv
+    source venv/bin/activate   # macOS/Linux
+    venv\Scripts\activate      # Windows
