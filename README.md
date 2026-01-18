@@ -32,7 +32,9 @@ MyBudgetHub is a full-stack personal finance web application that helps users tr
 ## Tech Stack
 
 **Frontend:** HTML, CSS, JavaScript, Chart.js
+
 **Backend** Python, Flask, Flask-Login
+
 **Database** PostgreSQL, SQLAlchemy (Flask-SQLAlchemy through ORM)
 
 ## How to run locally:
