@@ -1,7 +1,22 @@
 # MyBudgetHub: Personal Finance Dashboard
 MyBudgetHub is a full-stack personal finance web application that helps users track expenses, manage budgets, and gain insights into their spending habits through interactive visualizations. The application is designed to make budgeting simple, visual, and actionable.
 
-**Features:**
+## Features:
 
-1. Authentication
-2. Expense Management
+1. **Authentication**
+  - Secure registration and login
+  - Session-based authentication
+  - Per-user data isolation
+
+2. **Expense Management**
+  - Add, edit, and delete expenses
+  - Automatic expense categorization
+  - Interactive spending visualizations
+  - Monthly and weekly comparisons
+
+3. **Budgeting**
+  - Create, edit, and delete budgets by category
+  - Real-time budget usage tracking
+  - Visual progress indicators and warnings
+
+4. 
