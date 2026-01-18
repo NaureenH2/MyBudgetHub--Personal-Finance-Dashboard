@@ -57,4 +57,13 @@ pip install -r requirements.txt
 **4. Set up PostgreSQL**
 
 - Create a PostegreSQL Database locally
-- 
+- Update your database connection string in your Flask configuration
+    - Ex. postgresql://username:password@localhost:5432/mybudgethub
+
+**5. Initialize the database**
+
+flask db upgrade
+
+**6. Run the Application**
+
+The app will be available at: http://127.0.0.1:5000
