@@ -19,4 +19,18 @@ MyBudgetHub is a full-stack personal finance web application that helps users tr
   - Real-time budget usage tracking
   - Visual progress indicators and warnings
 
-4. 
+4. **CSV Import & Export**
+  - Import expenses from bank CSV files
+  - Export expenses for external analysis
+
+5. **Insights Dashboard**
+  - Category-based expense charts **(data visualization)
+  - Monthly spending trends
+  - Top spending category highlights
+  - Budget alerts when limits are approached
+
+## Tech Stack
+
+**Frontend:** HTML, CSS, JavaScript, Chart.js
+**Backend** Python, Flask, Flask-Login
+**Database** PostgreSQL, SQLAlchemy
