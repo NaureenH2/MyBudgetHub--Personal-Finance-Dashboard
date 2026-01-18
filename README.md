@@ -1,2 +1,4 @@
 # MyBudgetHub: Personal Finance Dashboard
-A personal finance dashboard built with Flask, PostgreSQL, and Chart.js
+MyBudgetHub is a full-stack personal finance web application that helps users track expenses, manage budgets, and gain insights into their spending habits through interactive visualizations. The application is designed to make budgeting simple, visual, and actionable.
+
+
