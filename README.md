@@ -40,7 +40,21 @@ MyBudgetHub is a full-stack personal finance web application that helps users tr
 ## How to run locally:
 
 **1. Clone the repository**
+
+git clone https://github.com/your-username/mybudgethub.git
+cd mybudgethub
+
 **2. Create and activate a virtual environment**
-    python -m venv venv
-    source venv/bin/activate   # macOS/Linux
-    venv\Scripts\activate      # Windows
+
+python -m venv venv
+source venv/bin/activate   # macOS/Linux
+venv\Scripts\activate      # Windows
+
+**3. Install dependencies**
+
+pip install -r requirements.txt
+
+**4. Set up PostgreSQL**
+
+- Create a PostegreSQL Database locally
+- 
